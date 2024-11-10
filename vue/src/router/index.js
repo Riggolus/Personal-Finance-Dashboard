@@ -2,10 +2,12 @@ import { createRouter as createRouter, createWebHistory } from 'vue-router'
 import { useStore } from 'vuex'
 
 // Import components
-import HomeView from '../views/HomeView.vue';
+import DashboardView from '../views/DashboardView.vue';
 import LoginView from '../views/LoginView.vue';
 import LogoutView from '../views/LogoutView.vue';
 import RegisterView from '../views/RegisterView.vue';
+import SettingsView from '../views/SettingsView.vue';
+import TransactionsView from '../views/TransactionsView.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -19,7 +21,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: DashboardView,
     meta: {
       requiresAuth: true
     }
@@ -47,7 +49,24 @@ const routes = [
     meta: {
       requiresAuth: false
     }
+  },
+  {
+    path: "/settings",
+    name: "settings",
+    component: SettingsView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/transactions",
+    name: "transactions",
+    component: TransactionsView,
+    meta: {
+      requiresAuth: true
+    }
   }
+
 ];
 
 // Create the router
