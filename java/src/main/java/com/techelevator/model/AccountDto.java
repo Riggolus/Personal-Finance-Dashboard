@@ -8,8 +8,7 @@ public class AccountDto {
     private String lastName;
     private String email;
     private String phone;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
 
     public int getUserId() {
         return userId;
@@ -49,21 +48,5 @@ public class AccountDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

@@ -3,20 +3,25 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Account;
 import com.techelevator.model.AccountDto;
+import com.techelevator.model.User;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Component
 public class JdbcAccountDao implements AccountDao{
 
     private final JdbcTemplate jdbcTemplate;
+    private final JdbcUserDao jdbcUserDao;
 
-    public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
+    public JdbcAccountDao(JdbcTemplate jdbcTemplate, JdbcUserDao jdbcUserDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.jdbcUserDao = jdbcUserDao;
     }
 
 
@@ -35,10 +40,32 @@ public class JdbcAccountDao implements AccountDao{
         }
     }
 
-    // Need to write the createAccount method
     @Override
-    public Account createAccount(AccountDto accountDto) {
-        return null;
+    public Account createAccount(AccountDto accountDto, Principal principal) {
+        User user = jdbcUserDao.getUserByUsername(principal.getName());
+        String sql = "INSERT INTO accounts (user_id, first_name, last_name, email, phone) " +
+                "VALUES (?, ?, ?, ?, ?) RETURNING account_id, user_id, first_name, last_name, email, phone, created_at, updated_at";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql,
+                    user.getId(),
+                    accountDto.getFirstName(),
+                    accountDto.getLastName(),
+                    accountDto.getEmail(),
+                    accountDto.getPhone()
+            );
+
+            if (results.next()) {
+                return mapRowToAccount(results);
+            } else {
+                throw new DaoException("Failed to create account: no data returned");
+            }
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data Integrity violation", e);
+        }
     }
 
     private Account mapRowToAccount(SqlRowSet rs){
@@ -49,16 +76,16 @@ public class JdbcAccountDao implements AccountDao{
         account.setLastName(rs.getString("last_name"));
         account.setEmail(rs.getString("email"));
         account.setPhone(rs.getString("phone"));
-        account.setCreatedAt(mapTimestampToLocalDateTime(rs.getTimestamp("created_at")));
-        account.setUpdatedAt(mapTimestampToLocalDateTime(rs.getTimestamp("updated_at")));
+        account.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        account.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
         return account;
     }
     // Utility method to convert Timestamp to LocalDateTime
-    private LocalDateTime mapTimestampToLocalDateTime(java.sql.Timestamp timestamp) {
-        if (timestamp != null) {
-            return timestamp.toLocalDateTime();
-        } else {
-            return null;
-        }
-    }
+//    private LocalDateTime mapTimestampToLocalDateTime(java.sql.Timestamp timestamp) {
+//        if (timestamp != null) {
+//            return timestamp.toLocalDateTime();
+//        } else {
+//            return null;
+//        }
+//    }
 }
