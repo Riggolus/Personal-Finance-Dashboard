@@ -20,6 +20,7 @@
   import AccountSummaryComponent from '../components/AccountSummaryComponent.vue';
   import TransactionLoggerComponent from '../components/TransactionLoggerComponent.vue';
   import AccountHistoryComponent from '../components/AccountHistoryComponent.vue';
+  import AccountService from '../services/AccountService';
 
   export default {
     name: 'DashboardView',
@@ -30,18 +31,22 @@
     },
     data() {
       return {
-        user: {
-          username: '',
-          password: ''
-        },
         account: {
-          firstName: 'Nikolas',
-          lastName: 'Knappen',
-          balance: 0
+          
         },
         
       }
     },
+    methods: {
+      async getAccount() {
+        this.account = await AccountService.getAccountByUserId(this.$store.state.user.id);
+        console.log(this.account);
+      }
+    },
+    created() {
+      console.log(this.$store.state.user.id);
+      this.getAccount();
+    }
   }
 </script>
 
