@@ -3,6 +3,9 @@
     <div id="header">
       <h1 id="title">Personal Finance Manager</h1>
       <div id="nav">
+        <div>
+          <sidebar-component v-if="$store.state.token != ''"/>
+        </div>
         <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
         <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
       </div>
@@ -11,6 +14,18 @@
   </div>
 </template>
 
+<script>
+import SidebarComponent from './components/SidebarComponent.vue';
+
+export default {
+  components: {
+    SidebarComponent
+  }
+};
+
+</script>
+
+
 <style scoped>
 #capstone-app {
   display: grid;
@@ -18,7 +33,7 @@
   grid-template-rows: 60px auto;
   grid-template-areas:
     "header header"
-    "sidebar main-content";
+    "main-content main-content";
   height: 100vh;
   width: 100vw;
   background: rgb(161, 178, 219);
