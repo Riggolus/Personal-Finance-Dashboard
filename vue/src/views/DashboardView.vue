@@ -1,8 +1,15 @@
 <template>
   <div id="dashboard">
     <div class="home">
-      <h1>Home</h1>
-      <p>You must be authenticated to see this</p>
+      <div id="greeting">
+        <h2>Welcome {{ account.firstName }}</h2>
+      </div>
+      
+      <AccountSummaryComponent />
+
+      <TransactionLoggerComponent />
+      
+      <AccountHistoryComponent />
     </div>
 
    
@@ -10,25 +17,35 @@
 </template>
 
 <script>
+  import AccountSummaryComponent from '../components/AccountSummaryComponent.vue';
+  import TransactionLoggerComponent from '../components/TransactionLoggerComponent.vue';
+  import AccountHistoryComponent from '../components/AccountHistoryComponent.vue';
 
+  export default {
+    name: 'DashboardView',
+    components: {
+      AccountSummaryComponent,
+      TransactionLoggerComponent,
+      AccountHistoryComponent
+    },
+    data() {
+      return {
+        user: {
+          username: '',
+          password: ''
+        },
+        account: {
+          firstName: 'Nikolas',
+          lastName: 'Knappen',
+          balance: 0
+        },
+        
+      }
+    },
+  }
 </script>
 
 <style>
-#dashboard {
-  display: grid;
-  grid-template-columns: 100px auto;
-  grid-template-rows: 60px auto;
-  grid-template-areas:
-    "header header"
-    "main-content main-content";
-  height: 100vh;
-  width: 100vw;
-  background: rgb(161, 178, 219);
-}
 
-.home {
-  grid-area: main-content;
-  padding: 20px;
-}
 
 </style>

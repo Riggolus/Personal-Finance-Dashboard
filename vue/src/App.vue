@@ -35,14 +35,13 @@ export default {
 <style scoped>
 #capstone-app {
   display: grid;
-  grid-template-columns: 100px auto;
-  grid-template-rows: 60px auto;
+  grid-template-columns: 100%;
+  grid-template-rows: 100px 500px 50px;
   grid-template-areas:
-    "header header"
-    "main-content main-content";
-  height: 100vh;
-  width: 100vw;
-  background: rgb(161, 178, 219);
+    "header"
+    "main-content"
+    "footer";
+  background: rgb(235, 237, 247);
 }
 
 #header {
@@ -61,11 +60,15 @@ export default {
   color: #000;
 }
 
+router-view {
+  grid-area: main-content;
+}
+
 footer {
+  grid-area: footer;
   background-color: #f8f9fa;
   border-top: 1px solid #e9ecef;
   padding: 10px;
-  height: 25px;
   display: flex;
   justify-content: space-evenly;
 }
