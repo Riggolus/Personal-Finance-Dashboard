@@ -12,6 +12,12 @@
     </div>
     <router-view />
   </div>
+  <footer>
+      <p><a href="https://github.com/Riggolus">github</a></p>
+      <p><a href="https://66d0dcf96553570d66ac15e9--nikolas-knappen.netlify.app/">Created by Nikolas Knappen</a></p>
+      <p><a href="https://www.linkedin.com/in/nikolasknappen/">LinkedIn</a></p>
+  </footer>
+  
 </template>
 
 <script>
@@ -55,5 +61,13 @@ export default {
   color: #000;
 }
 
+footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  padding: 10px;
+  height: 25px;
+  display: flex;
+  justify-content: space-evenly;
+}
 
 </style>
