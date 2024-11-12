@@ -7,9 +7,9 @@
                 <th>Description</th>
                 <th>Amount</th>
             </tr>
-            <tr v-for="transaction in history">
+            <tr v-for="transaction in Transactions">
                 <td>{{ transaction.date }}</td>
-                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.type }}</td>
                 <td>{{ transaction.amount }}</td>
             </tr>
         </table>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-
+import TransactionsService from '../services/TransactionsService';
 
 export default {
     data() {
@@ -27,25 +27,23 @@ export default {
                 lastName: 'Knappen',
                 balance: 0
             },
-            history: [
-                {
-                    date: '2020-01-01',
-                    description: 'Initial Deposit',
-                    amount: 1000
-                },
-                {
-                    date: '2020-01-02',
-                    description: 'Coffee',
-                    amount: -5
-                },
-                {
-                    date: '2020-01-03',
-                    description: 'Paycheck',
-                    amount: 2000
-                }
-            ]
+            Transactions: []
         }
     },
+    methods: {
+        async getTransactionsForUser() {
+            try {
+                const response = await TransactionsService.getTransactions();
+                this.Transactions = response.data;
+                console.log("Transaction data:", this.Transactions);
+            } catch (error) {
+                console.error("Failed to fetch transactions:", error);
+            }
+        }
+    },
+    created() {
+        this.getTransactionsForUser();
+    }
     
 }
 </script>
