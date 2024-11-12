@@ -1,6 +1,6 @@
 <template>
     <div id="create-account">
-        <form action="DashboardView" id="account-form">
+        <form action="" id="account-form">
             <h2>Create Account</h2>
             <div class="form-group">
                 <label for="firstName">First Name</label>

@@ -1,6 +1,8 @@
 <template>
-    <h1>This is where the user will be able to adjust their settings</h1>
-    <AccountCreationComponent />
+    <div>
+        <h2>Lets create an account!</h2>
+        <AccountCreationComponent />
+    </div>
 </template>
 
 <script>
