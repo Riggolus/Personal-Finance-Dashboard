@@ -16,11 +16,15 @@ http.interceptors.request.use(config => {
     return Promise.reject(error);
   });
 
-  
+
 
 export default {
     
     getAccountByUserId(userId) {
         return http.get(`/account/${userId}`)
+    },
+
+    createAccount(account) {
+        return http.post('/account', account);
     }
 }
