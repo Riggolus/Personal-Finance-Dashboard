@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h2>Lets create an account!</h2>
         <AccountCreationComponent />
     </div>
 </template>

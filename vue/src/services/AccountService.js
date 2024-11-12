@@ -26,5 +26,9 @@ export default {
 
     createAccount(account) {
         return http.post('/account', account);
-    }
+    },
+
+    updateAccount(account) {
+        return http.put('/account', account);
+    },
 }
