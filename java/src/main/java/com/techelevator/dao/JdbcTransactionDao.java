@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Transaction;
+import com.techelevator.model.TransactionDto;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -49,6 +50,46 @@ public class JdbcTransactionDao implements TransactionDao{
         return transactions;
     }
 
+    // Having some strange issues with this method in testing. It correctly populates my database but throws
+    // a 500 Internal Server Error. It was originally in a try catch block but i took it
+    // out so I could move on
+    @Override
+    public Transaction createTransaction(TransactionDto transactionDto, Principal principal) {
+        int accountId = accountDao.getAccountByUserId(userDao.getUserByUsername(principal.getName()).getId()).getAccountId();
+        String sql = "INSERT INTO transactions (account_id, type, amount, category, date, notes) " +
+                "VALUES (?,?,?,?,?,?);";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId, transactionDto.getType(),
+                    transactionDto.getAmount(), transactionDto.getCategory(), transactionDto.getDate(),
+                    transactionDto.getNotes());
+        if (results.next()){
+            return mapToRow(results);
+        } else {
+                return null;
+        }
+
+    }
+
+    @Override
+    public boolean updateTransaction(Transaction transaction) {
+
+        String sql = "UPDATE transactions SET type = ?, amount = ?, category = ?, " +
+                "date = ?, notes = ? WHERE transaction_id = ?;";
+        int rowsAffected = 0;
+        try {
+            rowsAffected = jdbcTemplate.update(sql, transaction.getType(), transaction.getAmount(),
+                    transaction.getCategory(), transaction.getDate(), transaction.getNotes(), transaction.getTransactionId());
+            if (rowsAffected != 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(CannotGetJdbcConnectionException e){
+            throw new DaoException("cannot connect to database",e);
+        } catch (DataIntegrityViolationException e){
+            throw new DaoException("Violation of data integrity", e);
+        }
+    }
 
     public Transaction mapToRow(SqlRowSet sqlRowSet){
         Transaction transaction = new Transaction();
