@@ -68,6 +68,27 @@ public class JdbcAccountDao implements AccountDao{
         }
     }
 
+    @Override
+    public boolean editAccount(AccountDto accountDto, Principal principal) {
+        int rowsAffected = 0;
+        User user = jdbcUserDao.getUserByUsername(principal.getName());
+        String sql = "UPDATE accounts SET first_name = ?, last_name = ?, email = ?, phone = ? " +
+                "WHERE user_id = ?;";
+        try {
+            rowsAffected = jdbcTemplate.update(sql, accountDto.getFirstName(), accountDto.getLastName(),
+                    accountDto.getEmail(), accountDto.getPhone(), user.getId());
+            if (rowsAffected != 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(CannotGetJdbcConnectionException e){
+            throw new DaoException("cannot connect to database",e);
+        } catch (DataIntegrityViolationException e){
+            throw new DaoException("Violation of data integrity", e);
+        }
+    }
+
     private Account mapRowToAccount(SqlRowSet rs){
         Account account = new Account();
         account.setAccountId(rs.getInt("account_id"));

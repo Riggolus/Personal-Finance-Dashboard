@@ -10,5 +10,5 @@ public interface AccountDao {
 
     Account createAccount(AccountDto accountDto, Principal principal);
 
-
+    boolean editAccount (AccountDto accountDto, Principal principal);
 }
