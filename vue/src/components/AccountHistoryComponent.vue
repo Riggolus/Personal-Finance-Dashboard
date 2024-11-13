@@ -16,10 +16,12 @@
         :title-length="15"                      
         @event-click ="viewTransaction"
         :event-style="event => ({ backgroundColor: event.color })"
-      />
-  
-      <!-- Modal for Viewing and Editing Transactions -->
-      <div v-if="showModal" class="modal">
+      /> 
+      
+    </div>
+
+    <!-- Modal for Viewing and Editing Transactions -->
+    <div v-if="showModal" class="modal">
         <h3>Transaction Details</h3>
         <div id="transaction-details" v-if="!editTransactionDetails">
             <div id="selected-type">
@@ -106,28 +108,35 @@
         </div>
         <button id="close-transaction" @click="closeModal">Close</button>
       </div>
-    </div>
-
-
 
     <!-- Transaction Table -->
-    <div v-if="!calendarMode">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="transaction in Transactions" :key="transaction.id" @click="console.log(transaction.notes)">
-            <td>{{ transaction.date }}</td>
-            <td>{{ transaction.amount }}</td>
-            
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <div v-if="!calendarMode">
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Catagory</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr 
+                v-for="transaction in Transactions" 
+                :key="transaction.id" 
+                :style="{ backgroundColor: transaction.type === 'income' ? '#e0f7e9' : '#fdecea' }" 
+                @click="viewTransaction({ data: transaction })"
+                class="transaction-row"
+            >
+                <td>{{ transaction.date }}</td>
+                <td :style="{ color: transaction.type === 'income' ? 'green' : 'red' }">
+                {{ transaction.type === 'income' ? '+' : '-' }} ${{ transaction.amount }}
+                </td>
+                <td>{{ transaction.category }}</td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+
     </div>
   </template>
   
@@ -256,6 +265,54 @@
 .vuecal-event:hover {
   background-color: #ddd; /* Change background color on hover */
   transform: scale(1.05); /* Slightly enlarge the event on hover */
+}
+
+.transaction-row {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.transaction-row:hover {
+  background-color: #f0f0f0; /* Slightly darken the row on hover */
+}
+
+table {
+    width: 60%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    border-color: black;
+    padding: 10px;
+    text-align: center;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+    text-align: center;
+    border-color: grey;
+}
+
+#history {
+    padding: 20px;
+}
+
+#history-title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#calendar-view {
+    margin-bottom: 20px;
 }
   
   </style>
