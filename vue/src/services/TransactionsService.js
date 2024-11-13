@@ -20,12 +20,12 @@ export default {
     getTransactions() {
         return http.get('/transactions');
     },
-    // createTransaction(transaction) {
-    //     return http.post('/transactions', transaction);
-    // },
-    // updateTransaction(transaction) {
-    //     return http.put('/transactions', transaction);
-    // },
+    createTransaction(transaction) {
+        return http.post('/transactions', transaction);
+    },
+    updateTransaction(transaction) {
+        return http.put('/transactions', transaction);
+    },
     // deleteTransaction(transactionId) {
     //     return http.delete(`/transactions/${transactionId}`);
     // }

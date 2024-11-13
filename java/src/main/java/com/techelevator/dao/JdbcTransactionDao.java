@@ -34,7 +34,7 @@ public class JdbcTransactionDao implements TransactionDao{
         //meaty way of getting account Id that I'm proud of
         int accountId =  accountDao.getAccountByUserId(userDao.getUserByUsername(principal.getName()).getId()).getAccountId();
         String sql = "SELECT * FROM transactions WHERE account_id = ? " +
-                "ORDER BY date;";
+                "ORDER BY date DESC;";
         try{
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
             while (results.next()) {
