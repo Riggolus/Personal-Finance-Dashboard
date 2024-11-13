@@ -14,53 +14,56 @@
                     </select>
                     
                     <label for="category">Category:</label>
-                        <select name="category" id="category" v-if="this.transaction.type == 'income'">
+                        <select name="category" id="category" v-if="this.transaction.type == 'income'"
+                        v-model="this.transaction.category">
                             <optgroup label="Income Sources">
-                                <option value="salary">Salary</option>
-                                <option value="bonus">Bonus</option>
-                                <option value="gift">Gift</option>
-                                <option value="interest">Interest</option>
-                                <option value="investment-return">Investment Return</option>
-                                <option value="rental-income">Rental Income</option>
-                                <option value="freelance">Freelance</option>
-                                <option value="other">Other</option>
+                                <option value="Salary">Salary</option>
+                                <option value="Bonus">Bonus</option>
+                                <option value="Gift">Gift</option>
+                                <option value="Interest">Interest</option>
+                                <option value="Investment Return">Investment Return</option>
+                                <option value="Rental Income">Rental Income</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Other">Other</option>
                             </optgroup>
                         </select>
 
-                        <select name="category" id="category" v-else-if="this.transaction.type == 'expense'">
+                        <select name="category" id="category" v-else-if="this.transaction.type == 'expense'"
+                        v-model="this.transaction.category">
                             <optgroup label="Household">
-                                <option value="rent-mortgage">Rent/Mortgage</option>
-                                <option value="utilities">Utilities</option>
-                                <option value="home-maintenance">Home Maintenance</option>
-                                <option value="property-taxes">Property Taxes</option>
+                                <option value="Rent/Mortgage">Rent/Mortgage</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Home Maintenance">Home Maintenance</option>
+                                <option value="Property Taxes">Property Taxes</option>
                             </optgroup>
                             
                             <optgroup label="Food">
-                                <option value="groceries">Groceries</option>
-                                <option value="dining-out">Dining Out</option>
+                                <option value="Groceries">Groceries</option>
+                                <option value="Dining Out">Dining Out</option>
                             </optgroup>
 
                             <optgroup label="Transportation">
-                                <option value="gas">Gas</option>
-                                <option value="public-transportation">Public Transportation</option>
-                                <option value="parking">Parking</option>
-                                <option value="vehicle-maintenance">Vehicle Maintenance</option>
-                                <option value="car-payment">Car Payment</option>
+                                <option value="Gas">Gas</option>
+                                <option value="Public Transportation">Public Transportation</option>
+                                <option value="Parking">Parking</option>
+                                <option value="Vehicle Maintenance">Vehicle Maintenance</option>
+                                <option value="Car Payment">Car Payment</option>
                             </optgroup>
 
                             <optgroup label="Healthcare">
-                                <option value="health-insurance">Health Insurance</option>
-                                <option value="medical-bills">Medical Bills</option>
-                                <option value="prescriptions">Prescriptions</option>
-                                <option value="fitness">Fitness</option>
+                                <option value="Health Insurance">Health Insurance</option>
+                                <option value="Medical Bills">Medical Bills</option>
+                                <option value="Prescriptions">Prescriptions</option>
+                                <option value="Fitness">Fitness</option>
                             </optgroup>
 
                             <optgroup label="Entertainment">
-                                <option value="streaming-services">Streaming Services</option>
-                                <option value="movies-theater">Movies/Theater</option>
-                                <option value="concerts-events">Concerts/Events</option>
-                                <option value="games">Games</option>
+                                <option value="Streaming Services">Streaming Services</option>
+                                <option value="Movies Theater">Movies/Theater</option>
+                                <option value="Concerts Events">Concerts/Events</option>
+                                <option value="Games">Games</option>
                             </optgroup>
+                            <option value="Other">Other</option>
                         </select>
 
                         <label for="amount">Amount:</label>
@@ -99,6 +102,7 @@ export default {
     },
     methods: {
         async createTransactionForUser() {
+            console.log(this.transaction);
             try {
                 const response = await TransactionsService.createTransaction(this.transaction);
             } catch (error) {

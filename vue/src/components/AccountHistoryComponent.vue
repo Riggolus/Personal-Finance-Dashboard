@@ -59,23 +59,23 @@ export default {
         :cell-height="100"                                                  
         :title-length="15"                      
         @event-click ="viewTransaction"
+        :event-style="event => ({ backgroundColor: event.color })"
       />
   
       <!-- Modal for Viewing and Editing Transactions -->
       <div v-if="showModal" class="modal">
         <h3>Transaction Details</h3>
-        <label for="type">Type:</label>
-        <input type="text" v-model="selectedTransaction.type" id="type" disabled />
-
-        <label for="category">Category:</label>
-        <input type="text" v-model="selectedTransaction.category" id="category" disabled />
-
-        <label for="amount">Amount:</label>
-        <input type="number" v-model="selectedTransaction.amount" id="amount" />
+        <div id="selected-type">
+            <h3>Type: {{selectedTransaction.type.charAt(0).toUpperCase() + selectedTransaction.type.slice(1)}}</h3>
+        </div>
+        <div id="selected-category">Category: {{ selectedTransaction.category }}</div>
+        
+        <div id="selected-amount">Amount: ${{ selectedTransaction.amount }}</div>
   
-        <label for="date">Date:</label>
-        <input type="date" v-model="selectedTransaction.date" id="date" />
-  
+        <div id="selected-date">Date: {{ selectedTransaction.date }}</div>
+        
+        <div id="selected-notes">Notes: {{ selectedTransaction.notes }}</div>
+
         <button @click="updateTransaction">Save Changes</button>
         <button @click="closeModal">Close</button>
       </div>
@@ -116,21 +116,27 @@ export default {
       };
     },
     methods: {
-      async getTransactionsForUser() {
-        try {
-          const response = await TransactionsService.getTransactions();
-          this.Transactions = response.data;
-          this.transactionEvents = this.Transactions.map(transaction => ({
-            id: transaction.id,
-            start: transaction.date,
-            end: transaction.date,
-            title: `${transaction.type}: $${transaction.amount}`,
-            data: transaction
-          }));
-        } catch (error) {
-          console.error("Failed to fetch transactions:", error);
-        }
-      },
+        async getTransactionsForUser() {
+            try {
+                const response = await TransactionsService.getTransactions();
+                this.Transactions = response.data;
+                this.transactionEvents = this.Transactions.map(transaction => {
+                const sign = transaction.type === 'income' ? '+' : '-';
+                const color = transaction.type === 'income' ? 'green' : 'red'; // Set color for income or expense
+
+                return {
+                    id: transaction.id,
+                    start: transaction.date,
+                    end: transaction.date,
+                    title: `${sign} $${transaction.amount}`,
+                    data: transaction,
+                    color: color // Add color to event data
+                };
+                });
+            } catch (error) {
+                console.error("Failed to fetch transactions:", error);
+            }
+    },
       viewTransaction(event) {
         this.selectedTransaction = { ...event.data }; // Clone data to avoid modifying event directly
         console.log("Selected transaction:", this.selectedTransaction);
@@ -203,6 +209,15 @@ export default {
 
 .modal button:hover {
     background-color: #0056b3;
+}
+
+.vuecal-event {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.vuecal-event:hover {
+  background-color: #ddd; /* Change background color on hover */
+  transform: scale(1.05); /* Slightly enlarge the event on hover */
 }
   
   </style>
