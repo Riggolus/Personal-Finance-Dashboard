@@ -36,7 +36,7 @@ export default {
 #capstone-app {
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: 100px 500px 50px;
+  grid-template-rows: 100px auto 50px;
   grid-template-areas:
     "header"
     "main-content"
