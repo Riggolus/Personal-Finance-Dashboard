@@ -1,55 +1,11 @@
-<!-- <template>
-    <div id="history">
-        <h3>Transaction History</h3>
-        <table>
-            <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Amount</th>
-            </tr>
-            <tr v-for="transaction in Transactions">
-                <td>{{ transaction.date }}</td>
-                <td>{{ transaction.type }}</td>
-                <td>{{ transaction.amount }}</td>
-            </tr>
-        </table>
-    </div>
-</template>
-
-<script>
-import TransactionsService from '../services/TransactionsService';
-
-export default {
-    data() {
-        return {
-            Transactions: []
-        }
-    },
-    methods: {
-        async getTransactionsForUser() {
-            try {
-                const response = await TransactionsService.getTransactions();
-                this.Transactions = response.data;
-                console.log("Transaction data:", this.Transactions);
-            } catch (error) {
-                console.error("Failed to fetch transactions:", error);
-            }
-        }
-    },
-    created() {
-        this.getTransactionsForUser();
-    }
-    
-}
-</script>
-
-<style>
-</style> -->
-
 <template>
     <div id="history">
-      <h3>Transaction History</h3>
-      
+        <div id="history-title-bar">
+        <h3>Transaction History</h3>
+        <button v-if="!calendarMode" @click="calendarMode = !calendarMode">Calendar View</button>
+        <button v-if="calendarMode" @click="calendarMode = !calendarMode">Table View</button> 
+        </div>
+      <div id="calendar-view" v-if="calendarMode">
       <!-- Transaction Calendar -->
       <vue-cal
         :events="transactionEvents"
@@ -150,23 +106,28 @@ export default {
         </div>
         <button id="close-transaction" @click="closeModal">Close</button>
       </div>
-      <!-- Transaction Table -->
+    </div>
+
+
+
+    <!-- Transaction Table -->
+    <div v-if="!calendarMode">
       <table>
         <thead>
           <tr>
             <th>Date</th>
-            <th>Description</th>
             <th>Amount</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="transaction in Transactions" :key="transaction.id">
+          <tr v-for="transaction in Transactions" :key="transaction.id" @click="console.log(transaction.notes)">
             <td>{{ transaction.date }}</td>
-            <td>{{ transaction.type }}</td>
             <td>{{ transaction.amount }}</td>
+            
           </tr>
         </tbody>
       </table>
+    </div>
     </div>
   </template>
   
@@ -183,7 +144,8 @@ export default {
         transactionEvents: [],
         showModal: false,
         selectedTransaction: null,
-        editTransactionDetails: false
+        editTransactionDetails: false,
+        calendarMode: false
       };
     },
     methods: {
