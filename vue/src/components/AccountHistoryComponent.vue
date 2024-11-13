@@ -65,21 +65,91 @@ export default {
       <!-- Modal for Viewing and Editing Transactions -->
       <div v-if="showModal" class="modal">
         <h3>Transaction Details</h3>
-        <div id="selected-type">
-            <h3>Type: {{selectedTransaction.type.charAt(0).toUpperCase() + selectedTransaction.type.slice(1)}}</h3>
-        </div>
-        <div id="selected-category">Category: {{ selectedTransaction.category }}</div>
-        
-        <div id="selected-amount">Amount: ${{ selectedTransaction.amount }}</div>
-  
-        <div id="selected-date">Date: {{ selectedTransaction.date }}</div>
-        
-        <div id="selected-notes">Notes: {{ selectedTransaction.notes }}</div>
+        <div id="transaction-details" v-if="!editTransactionDetails">
+            <div id="selected-type">
+                <h3>Type: {{selectedTransaction.type.charAt(0).toUpperCase() + selectedTransaction.type.slice(1)}}</h3>
+            </div>
+            <div id="selected-category">Category: {{ selectedTransaction.category }}</div>
+            
+            <div id="selected-amount">Amount: ${{ selectedTransaction.amount }}</div>
+    
+            <div id="selected-date">Date: {{ selectedTransaction.date }}</div>
+            
+            <div id="selected-notes">Notes: {{ selectedTransaction.notes }}</div>
 
-        <button @click="updateTransaction">Save Changes</button>
-        <button @click="closeModal">Close</button>
+            <button id="edit-transaction" @click="updateTransactionForm" v-if="!editTransactionDetails">Edit</button>
+            
+        </div>
+        <div id="edit-transaction-form" v-if="editTransactionDetails">
+            <form action="">
+                // Add form fields for editing transaction details
+                <label for="type">Type:</label>
+                <select name="type" id="type" v-model="selectedTransaction.type">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+
+                <label for="category">Category:</label>
+                <select name="category" id="category" v-if="selectedTransaction.type == 'income'"
+                        v-model="selectedTransaction.category">
+                            <optgroup label="Income Sources">
+                                <option value="Salary">Salary</option>
+                                <option value="Bonus">Bonus</option>
+                                <option value="Gift">Gift</option>
+                                <option value="Interest">Interest</option>
+                                <option value="Investment Return">Investment Return</option>
+                                <option value="Rental Income">Rental Income</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Other">Other</option>
+                            </optgroup>
+                        </select>
+                <select name="category" id="category" v-else-if="selectedTransaction.type == 'expense'"
+                 v-model="selectedTransaction.category" >
+                    <optgroup label="Housing">
+                        <option value="Rent">Rent</option>
+                        <option value="Mortgage">Mortgage</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Home Repairs">Home Repairs</option>
+                    </optgroup>
+
+                    <optgroup label="Transportation">
+                        <option value="Car Payment">Car Payment</option>
+                        <option value="Gas">Gas</option>
+                        <option value="Public Transportation">Public Transportation</option>
+                        <option value="Car Repairs">Car Repairs</option>
+                    </optgroup>
+
+                    <optgroup label="Food">
+                        <option value="Groceries">Groceries</option>
+                        <option value="Restaurants">Restaurants</option>
+                        <option value="Fast Food">Fast Food</option>
+                        <option value="Coffee Shops">Coffee Shops</option>
+                    </optgroup>
+
+                    <optgroup label="Entertainment">
+                        <option value="Streaming Services">Streaming Services</option>
+                        <option value="Movies Theater">Movies/Theater</option>
+                        <option value="Concerts Events">Concerts/Events</option>
+                        <option value="Games">Games</option>
+                    </optgroup>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="amount">Amount:</label>
+                <input type="number" name="amount" id="amount" v-model="selectedTransaction.amount" step="0.01">
+
+                <label for="date">Date:</label>
+                <input type="date" name="date" id="date" v-model="selectedTransaction.date">
+
+                <label for="notes">Notes:</label>
+                <textarea name="notes" id="notes" cols="30" rows="10" v-model="selectedTransaction.notes"></textarea>
+
+                <button @click="updateTransaction">Update</button>
+
+            </form>
+        </div>
+        <button id="close-transaction" @click="closeModal">Close</button>
       </div>
-  
       <!-- Transaction Table -->
       <table>
         <thead>
@@ -112,7 +182,8 @@ export default {
         Transactions: [],
         transactionEvents: [],
         showModal: false,
-        selectedTransaction: null
+        selectedTransaction: null,
+        editTransactionDetails: false
       };
     },
     methods: {
@@ -145,16 +216,21 @@ export default {
       closeModal() {
         this.showModal = false;
         this.selectedTransaction = null;
+        this.editTransactionDetails = false;
       },
-      async updateTransaction() {
-        try {
-          await TransactionsService.updateTransaction(this.selectedTransaction);
-          await this.getTransactionsForUser(); // Refresh transactions after update
-          this.closeModal();
-        } catch (error) {
-          console.error("Failed to update transaction:", error);
+      updateTransactionForm() {
+        this.editTransactionDetails = true;
+      },
+        async updateTransaction() {
+            console.log("Updating transaction:", this.selectedTransaction);
+            try {
+            await TransactionsService.updateTransaction(this.selectedTransaction);
+            this.closeModal();
+            this.getTransactionsForUser();
+            } catch (error) {
+            console.error("Failed to update transaction:", error);
+            }
         }
-      },
     },
     created() {
       this.getTransactionsForUser();
