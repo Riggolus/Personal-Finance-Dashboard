@@ -3,15 +3,16 @@
     <div class="home">
       <div id="greeting">
         <h2>Welcome {{ account.firstName }}</h2>
+        <button @click="console.log(this.filters)">Test Filter Object</button>
       </div>
       
       <AccountSummaryComponent />
 
       <TransactionLoggerComponent />
 
-      <FilterTransactionsComponent />
+      <FilterTransactionsComponent @update-filters="setFilterCriteria" />
       
-      <AccountHistoryComponent />
+      <AccountHistoryComponent :filters="filters" />
     </div>
 
    
@@ -25,6 +26,7 @@
   import AccountService from '../services/AccountService';
   import FilterTransactionsComponent from '../components/FilterTransactionsComponent.vue';
 
+
   export default {
     name: 'DashboardView',
     components: {
@@ -35,24 +37,16 @@
     },
     data() {
       return {
-        account: {
-          
-        },
-        
+        account: {},
+        filters: {}
       }
     },
     methods: {
       async getAccount() {
         try {
           const response = await AccountService.getAccountByUserId(this.$store.state.user.id);
-          this.account = response.data; // Access the actual account data
-          console.log("Account data:", this.account);
+          this.account = response.data;
 
-          // Log the specific values of firstName and lastName
-          console.log("First Name:", this.account.firstName);
-          console.log("Last Name:", this.account.lastName);
-
-          // Redirect if either name field is missing or empty
           if (this.account.firstName == null || this.account.firstName === "" ||
               this.account.lastName == null || this.account.lastName === "") {
             console.log("Redirecting to settings because name fields are missing.");
@@ -61,12 +55,14 @@
         } catch (error) {
           console.error("Failed to fetch account:", error);
         }
+      },
+      setFilterCriteria(newFilters) {
+        this.filters = newFilters;
       }
     },
     created() {
       console.log(this.$store.state.user.id);
-      this.getAccount();
-      
+      this.getAccount();    
     }
   }
 </script>

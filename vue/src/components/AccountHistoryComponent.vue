@@ -2,6 +2,7 @@
     <div id="history">
         <div id="history-title-bar">
         <h3>Transaction History</h3>
+        <button @click="console.log(this.filters)">Test filter</button>
         <button v-if="!calendarMode" @click="calendarMode = !calendarMode">Calendar View</button>
         <button v-if="calendarMode" @click="calendarMode = !calendarMode">Table View</button> 
         </div>
@@ -121,7 +122,7 @@
             </thead>
             <tbody>
             <tr 
-                v-for="transaction in Transactions" 
+                v-for="transaction in filteredTransactions" 
                 :key="transaction.id" 
                 :style="{ backgroundColor: transaction.type === 'income' ? '#e0f7e9' : '#fdecea' }" 
                 @click="viewTransaction({ data: transaction })"
@@ -147,9 +148,17 @@
   
   export default {
     components: { VueCal },
+    props: {
+        filters: {
+        type: Object,
+        default: () => ({
+            
+            })
+        }
+    },
     data() {
       return {
-        Transactions: [],
+        transactions: [],
         transactionEvents: [],
         showModal: false,
         selectedTransaction: null,
@@ -161,11 +170,11 @@
         async getTransactionsForUser() {
             try {
                 const response = await TransactionsService.getTransactions();
-                this.Transactions = response.data;
-                this.transactionEvents = this.Transactions.map(transaction => {
+                this.transactions = response.data;
+                this.transactionEvents = this.transactions.map(transaction => {
                 const sign = transaction.type === 'income' ? '+' : '-';
                 const color = transaction.type === 'income' ? 'green' : 'red'; // Set color for income or expense
-
+                 
                 return {
                     id: transaction.id,
                     start: transaction.date,
@@ -174,6 +183,7 @@
                     data: transaction,
                     color: color // Add color to event data
                 };
+                
                 });
             } catch (error) {
                 console.error("Failed to fetch transactions:", error);
@@ -201,9 +211,26 @@
             } catch (error) {
             console.error("Failed to update transaction:", error);
             }
-        },
-        filterTransactions() {
-            // Filter transactions based on certain criteria
+        }
+    },
+    computed: {
+        filteredTransactions() {
+            console.log("Transactions fetched:", this.transactions); 
+        // Set default filter values to include all transactions if undefined
+            const minAmount = this.filters.minAmount ?? Number.NEGATIVE_INFINITY;
+            const maxAmount = this.filters.maxAmount ?? Number.POSITIVE_INFINITY;
+            const date = this.filters.date || null;
+            const type = this.filters.type || null;
+            const category = this.filters.category || null;
+
+            return this.transactions.filter(transaction => {
+            const dateMatch = !date || transaction.date === date;
+            const typeMatch = !type || transaction.type === type;
+            const amountMatch = transaction.amount >= minAmount && transaction.amount <= maxAmount;
+            const categoryMatch = !category || transaction.category === category;
+
+            return dateMatch && typeMatch && amountMatch && categoryMatch;
+            });
         }
     },
     created() {

@@ -8,8 +8,8 @@
                 </label>
 
                 <label for="type">Type:
-                    <select name="type" id="type" v-model="filters.type">
-                        <option value="all">All</option>
+                    <select name="type" id="type" v-model="filters.type" @change="applyFilters">
+                        <option value="">All</option>
                         <option value="expense">Expense</option>
                         <option value="income">Income</option>
                     </select>
@@ -26,7 +26,7 @@
 
                 <label for="category">Category:
                     <select name="category" id="category" v-if="filters.type == 'income'"
-                    v-model="filters.category">
+                    v-model="filters.category" @change="applyFilters">
                         <optgroup label="Income Sources">
                             <option value="Salary">Salary</option>
                             <option value="Bonus">Bonus</option>
@@ -40,7 +40,7 @@
                     </select>
 
                     <select name="category" id="category" v-else-if="filters.type == 'expense'"
-                    v-model="filters.category">
+                    v-model="filters.category" @change="applyFilters">
                         <optgroup label="Household">
                             <option value="Rent/Mortgage">Rent/Mortgage</option>
                             <option value="Utilities">Utilities</option>
@@ -116,7 +116,7 @@ export default {
     data() {
         return {
             filters: {
-                date: null,
+                date: '',
                 type: "",
                 minAmount: 0,
                 maxAmount: 1000000,
