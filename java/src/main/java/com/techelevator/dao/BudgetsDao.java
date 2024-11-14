@@ -11,6 +11,8 @@ public interface BudgetsDao {
 
     List<Budgets> getBudgets(Principal principal);
 
+    Budgets getBudgetByBudgetId(int BudgetId);
+
     boolean updateBudget(Budgets budgets);
 
     boolean deleteBudget(int budgetId);

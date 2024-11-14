@@ -1,13 +1,17 @@
 package com.techelevator.dao;
 
+import com.techelevator.exception.DaoException;
 import com.techelevator.model.Budgets;
 import com.techelevator.model.BudgetsDto;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -25,13 +29,51 @@ public class JdbcBudgetsDao implements BudgetsDao{
     @Override
     public Budgets createBudget(BudgetsDto budgetsDto) {
         Budgets budget = new Budgets();
-        String sql = "INSERT INTO budgets ()"
-        return null;
+        String sql = "INSERT INTO budgets (account_id, category, amount_limit, " +
+                "start_date, end_date) VALUES (?,?,?,?,?);";
+        try {
+            int budgetId = jdbcTemplate.queryForObject(sql, int.class, budgetsDto.getAccountId(),
+                     budgetsDto.getCategory(), budgetsDto.getAmountLimit(), budgetsDto.getStartDate(),
+                    budgetsDto.getEndDate());
+            budget = getBudgetByBudgetId(budgetId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+        return budget;
+    }
+
+    @Override
+    public Budgets getBudgetByBudgetId(int budgetId) {
+        Budgets budgets = null;
+        String sql = "SELECT * FROM budgets WHERE budget_id = ?;";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, budgetId);
+            if (results.next()){
+                budgets = mapToRow(results);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+        return budgets;
     }
 
     @Override
     public List<Budgets> getBudgets(Principal principal) {
-        return List.of();
+        List<Budgets> budgetsList = new ArrayList<>();
+        String sql = "SELECT * FROM budgets WHERE account_id = ?;";
+        int accountId =  accountDao.getAccountByUserId(userDao.getUserByUsername(principal.getName()).getId()).getAccountId();
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+            while (results.next()){
+                Budgets budgets = mapToRow(results);
+                budgetsList.add(budgets);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+        return budgetsList;
     }
 
     @Override
