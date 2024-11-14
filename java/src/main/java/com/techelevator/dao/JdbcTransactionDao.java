@@ -91,6 +91,23 @@ public class JdbcTransactionDao implements TransactionDao{
         }
     }
 
+    @Override
+    public boolean deleteTransaction(int transactionId) {
+        boolean status = false;
+        String sql = "DELETE FROM transactions WHERE transaction_id = ?;";
+        try {
+            int id = jdbcTemplate.update(sql, transactionId);
+            if (id > 0) {
+                status = true;
+            }
+        } catch (CannotGetJdbcConnectionException e){
+            throw new DaoException("Unable to connect to database", e);
+        } catch (DataIntegrityViolationException e){
+            throw new DaoException("Data Integrity violation", e);
+        }
+        return status;
+    }
+
     public Transaction mapToRow(SqlRowSet sqlRowSet){
         Transaction transaction = new Transaction();
         transaction.setTransactionId(sqlRowSet.getInt("transaction_id"));

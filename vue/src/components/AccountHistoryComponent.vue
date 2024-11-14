@@ -37,7 +37,8 @@
             <div id="selected-notes">Notes: {{ selectedTransaction.notes }}</div>
 
             <button id="edit-transaction" @click="updateTransactionForm" v-if="!editTransactionDetails">Edit</button>
-            
+            <button id="delete-transaction" @click="deleteTransaction" v-if="!editTransactionDetails">Delete</button>
+
         </div>
         <div id="edit-transaction-form" v-if="editTransactionDetails">
             <form action="">
@@ -210,6 +211,21 @@
             this.getTransactionsForUser();
             } catch (error) {
             console.error("Failed to update transaction:", error);
+            }
+        },
+        async deleteTransaction() {
+            console.log("Deleting transaction:", this.selectedTransaction);
+            const isConfirmed = window.confirm("Are you sure you want to delete this transaction?");
+            if (isConfirmed){
+                try {
+                await TransactionsService.deleteTransaction(this.selectedTransaction.transactionId);
+                this.closeModal();
+                this.getTransactionsForUser();
+                } catch (error) {
+                console.error("Failed to delete transaction:", error);
+                }
+            } else {
+                alert("Transaction deletion canceled");
             }
         }
     },

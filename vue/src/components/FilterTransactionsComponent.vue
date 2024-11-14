@@ -14,7 +14,7 @@
                         <option value="income">Income</option>
                     </select>
                 </label>
-
+                <p>Would Love to add a Sliding Value Scale for amount</p>
                 <label>Minimum Amount:
                     <input type="number" id="min-amount" 
                     v-model="filters.minAmount" @change="applyFilters"/>

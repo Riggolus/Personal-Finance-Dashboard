@@ -26,7 +26,7 @@ export default {
     updateTransaction(transaction) {
         return http.put('/transactions', transaction);
     },
-    // deleteTransaction(transactionId) {
-    //     return http.delete(`/transactions/${transactionId}`);
-    // }
+    deleteTransaction(transactionId) {
+        return http.delete(`/transactions/${transactionId}`);
+    }
 }

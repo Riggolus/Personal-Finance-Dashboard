@@ -13,4 +13,6 @@ public interface TransactionDao {
     Transaction createTransaction(TransactionDto transactionDto, Principal principal);
 
     boolean updateTransaction(Transaction transaction);
+
+    boolean deleteTransaction(int transactionId);
 }

@@ -37,6 +37,10 @@ public class TransactionController {
     public boolean updateTransaction(@RequestBody Transaction transaction){
         return  transactionDao.updateTransaction(transaction);
     }
+    @DeleteMapping("/{transactionId}")
+    public boolean deleteTransaction(@PathVariable int transactionId){
+        return  transactionDao.deleteTransaction(transactionId);
+    }
 
 
 }
