@@ -3,7 +3,6 @@
     <div class="home">
       <div id="greeting">
         <h2>Welcome {{ account.firstName }}</h2>
-        <button @click="console.log(this.filters)">Test Filter Object</button>
       </div>
       
       <AccountSummaryComponent />

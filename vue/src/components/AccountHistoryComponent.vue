@@ -2,7 +2,6 @@
     <div id="history">
         <div id="history-title-bar">
         <h3>Transaction History</h3>
-        <button @click="console.log(this.filters)">Test filter</button>
         <button v-if="!calendarMode" @click="calendarMode = !calendarMode">Calendar View</button>
         <button v-if="calendarMode" @click="calendarMode = !calendarMode">Table View</button> 
         </div>
