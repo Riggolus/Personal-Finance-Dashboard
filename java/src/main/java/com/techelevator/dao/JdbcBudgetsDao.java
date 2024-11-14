@@ -27,12 +27,13 @@ public class JdbcBudgetsDao implements BudgetsDao{
     }
 
     @Override
-    public Budgets createBudget(BudgetsDto budgetsDto) {
+    public Budgets createBudget(BudgetsDto budgetsDto, Principal principal) {
         Budgets budget = new Budgets();
+        int accountId = accountDao.getAccountByUserId(userDao.getUserByUsername(principal.getName()).getId()).getAccountId();
         String sql = "INSERT INTO budgets (account_id, category, amount_limit, " +
                 "start_date, end_date) VALUES (?,?,?,?,?);";
         try {
-            int budgetId = jdbcTemplate.queryForObject(sql, int.class, budgetsDto.getAccountId(),
+            int budgetId = jdbcTemplate.queryForObject(sql, int.class, accountId,
                      budgetsDto.getCategory(), budgetsDto.getAmountLimit(), budgetsDto.getStartDate(),
                     budgetsDto.getEndDate());
             budget = getBudgetByBudgetId(budgetId);

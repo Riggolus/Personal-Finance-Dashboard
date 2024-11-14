@@ -7,7 +7,7 @@ import java.security.Principal;
 import java.util.List;
 
 public interface BudgetsDao {
-    Budgets createBudget(BudgetsDto budgetsDto);
+    Budgets createBudget(BudgetsDto budgetsDto, Principal principal);
 
     List<Budgets> getBudgets(Principal principal);
 
