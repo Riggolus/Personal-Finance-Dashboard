@@ -5,13 +5,13 @@
         <h2>Welcome {{ account.firstName }}</h2>
       </div>
       
-      <AccountSummaryComponent />
+      <BudgetsComponent id="budgets-component"/>
 
-      <TransactionLoggerComponent />
+      <TransactionLoggerComponent id="transaction-logger"/>
 
-      <FilterTransactionsComponent @update-filters="setFilterCriteria" />
+      <FilterTransactionsComponent id="filter-transactions" @update-filters="setFilterCriteria" />
       
-      <AccountHistoryComponent :filters="filters" />
+      <AccountHistoryComponent id="account-history" :filters="filters" />
     </div>
 
    
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import AccountSummaryComponent from '../components/AccountSummaryComponent.vue';
+  import BudgetsComponent from '../components/BudgetsComponent.vue';
   import TransactionLoggerComponent from '../components/TransactionLoggerComponent.vue';
   import AccountHistoryComponent from '../components/AccountHistoryComponent.vue';
   import AccountService from '../services/AccountService';
@@ -29,7 +29,7 @@
   export default {
     name: 'DashboardView',
     components: {
-      AccountSummaryComponent,
+      BudgetsComponent,
       TransactionLoggerComponent,
       AccountHistoryComponent,
       FilterTransactionsComponent
@@ -67,35 +67,35 @@
 </script>
 
 <style>
-  .home {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-    grid-template-areas: "greeting account-summary"
-                         "transaction-logger transaction-logger"
-                         "filter-transactions account-history";
-  }
+.home {
+  display: grid;
+  grid-template-columns: 1fr 1fr .5fr;
+  grid-gap: 20px;
+  grid-template-areas: 
+    "greeting budgets-component ."
+    "filter-transactions account-history transaction-logger "
+    ". account-history .";
 
-  #greeting {
-    grid-area: greeting;
-  }
+}
 
-  #account-summary {
-    grid-area: account-summary;
-  }
+#greeting {
+  grid-area: greeting;
+}
 
-  #transaction-logger {
-    grid-area: transaction-logger
-  }
+#budgets-component {
+  grid-area: budgets-component;
+}
 
-  #filter-transactions {
-    grid-area: filter-transactions;
-  }
+#transaction-logger {
+  grid-area: transaction-logger;
+}
 
-  #account-history {
-    grid-area: account-history;
-  }
+#filter-transactions {
+  grid-area: filter-transactions;
+}
 
-
+#account-history {
+  grid-area: account-history;
+}
 
 </style>
