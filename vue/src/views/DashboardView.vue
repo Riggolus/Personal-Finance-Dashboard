@@ -8,6 +8,8 @@
       <AccountSummaryComponent />
 
       <TransactionLoggerComponent />
+
+      <FilterTransactionsComponent />
       
       <AccountHistoryComponent />
     </div>
@@ -21,13 +23,15 @@
   import TransactionLoggerComponent from '../components/TransactionLoggerComponent.vue';
   import AccountHistoryComponent from '../components/AccountHistoryComponent.vue';
   import AccountService from '../services/AccountService';
+  import FilterTransactionsComponent from '../components/FilterTransactionsComponent.vue';
 
   export default {
     name: 'DashboardView',
     components: {
       AccountSummaryComponent,
       TransactionLoggerComponent,
-      AccountHistoryComponent
+      AccountHistoryComponent,
+      FilterTransactionsComponent
     },
     data() {
       return {
@@ -68,6 +72,35 @@
 </script>
 
 <style>
+  .home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    grid-template-areas: "greeting account-summary"
+                         "transaction-logger transaction-logger"
+                         "filter-transactions account-history";
+  }
+
+  #greeting {
+    grid-area: greeting;
+  }
+
+  #account-summary {
+    grid-area: account-summary;
+  }
+
+  #transaction-logger {
+    grid-area: transaction-logger
+  }
+
+  #filter-transactions {
+    grid-area: filter-transactions;
+  }
+
+  #account-history {
+    grid-area: account-history;
+  }
+
 
 
 </style>

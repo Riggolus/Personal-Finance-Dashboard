@@ -201,6 +201,9 @@
             } catch (error) {
             console.error("Failed to update transaction:", error);
             }
+        },
+        filterTransactions() {
+            // Filter transactions based on certain criteria
         }
     },
     created() {
