@@ -27,8 +27,11 @@
   import AccountService from '../services/AccountService';
   import FilterTransactionsComponent from '../components/FilterTransactionsComponent.vue';
   import AnalyticsComponent from '../components/AnalyticsComponent.vue';
+  import TransactionsService from '../services/TransactionsService';
+  import BudgetsService from '../services/BudgetsService';
   
-  import { calculateData } from '../utils/calculateData';
+  import { calculateDataV2 } from '../utils/calculateData';
+
 
   export default {
     name: 'DashboardView',
@@ -43,7 +46,12 @@
       return {
         account: {},
         filters: {},
-        analyticsData: null
+        transactions: [],
+        budgets: [],
+        analyticsData: {
+          totalIncome: 0,
+          totalExpense: 0
+        }
       }
     },
     methods: {
@@ -70,9 +78,23 @@
       this.getAccount();    
     },
     async mounted() {
-      console.log("Dashboard mounted");
-      window.calculateData = calculateData;
-      this.analyticsData =  await calculateData();
+      try {
+        console.log("Dashboard mounted");
+
+        // Step 1: Fetch transactions and budgets from the server
+        const responseTransactions = await TransactionsService.getTransactions();
+        const responseBudgets = await BudgetsService.getBudgets();
+
+        this.transactions = responseTransactions.data;
+        this.budgets = responseBudgets.data;
+
+        // Step 2: Call calculateDataV2 with the fetched data
+        this.analyticsData = await calculateDataV2(this.transactions, this.budgets);
+
+        console.log("Analytics data:", this.analyticsData);
+      } catch (error) {
+        console.error("Error fetching transactions or budgets:", error);
+      }
     }
   }
 </script>
