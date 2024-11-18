@@ -12,6 +12,8 @@
       <FilterTransactionsComponent id="filter-transactions" @update-filters="setFilterCriteria" />
       
       <AccountHistoryComponent id="account-history" :filters="filters" />
+
+      <AnalyticsComponent id="analytics-component" :analyticsData="analyticsData" />
     </div>
 
    
@@ -24,7 +26,8 @@
   import AccountHistoryComponent from '../components/AccountHistoryComponent.vue';
   import AccountService from '../services/AccountService';
   import FilterTransactionsComponent from '../components/FilterTransactionsComponent.vue';
-
+  import AnalyticsComponent from '../components/AnalyticsComponent.vue';
+  
   import { calculateData } from '../utils/calculateData';
 
   export default {
@@ -33,12 +36,14 @@
       BudgetsComponent,
       TransactionLoggerComponent,
       AccountHistoryComponent,
-      FilterTransactionsComponent
+      FilterTransactionsComponent,
+      AnalyticsComponent
     },
     data() {
       return {
         account: {},
-        filters: {}
+        filters: {},
+        analyticsData: null
       }
     },
     methods: {
@@ -64,9 +69,10 @@
       console.log(this.$store.state.user.id);
       this.getAccount();    
     },
-    mounted() {
+    async mounted() {
       console.log("Dashboard mounted");
       window.calculateData = calculateData;
+      this.analyticsData =  await calculateData();
     }
   }
 </script>
@@ -79,7 +85,8 @@
   grid-template-areas: 
     "greeting budgets-component ."
     "filter-transactions account-history transaction-logger "
-    ". account-history .";
+    ". account-history ."
+    ".analytics-component .";
 
 }
 
@@ -101,6 +108,10 @@
 
 #account-history {
   grid-area: account-history;
+}
+
+#analytics-component {
+  grid-area: analytics-component;
 }
 
 </style>
