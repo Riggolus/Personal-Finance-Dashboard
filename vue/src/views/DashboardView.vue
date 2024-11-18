@@ -25,6 +25,7 @@
   import AccountService from '../services/AccountService';
   import FilterTransactionsComponent from '../components/FilterTransactionsComponent.vue';
 
+  import { calculateData } from '../utils/calculateData';
 
   export default {
     name: 'DashboardView',
@@ -62,6 +63,10 @@
     created() {
       console.log(this.$store.state.user.id);
       this.getAccount();    
+    },
+    mounted() {
+      console.log("Dashboard mounted");
+      window.calculateData = calculateData;
     }
   }
 </script>
