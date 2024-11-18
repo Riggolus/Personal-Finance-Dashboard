@@ -111,7 +111,7 @@
       </div>
 
     <!-- Transaction Table -->
-        <div v-if="!calendarMode">
+        <div v-if="!calendarMode" id="scrollable-container">
         <table>
             <thead>
             <tr>
@@ -321,8 +321,14 @@
   background-color: #f0f0f0; /* Slightly darken the row on hover */
 }
 
+#scrollable-container {
+  max-height: 400px;  /* Set the height you want for the scrollable area */
+  overflow-y: auto;   /* Enables vertical scrolling */
+  border: 1px solid #ddd;  /* Optional: adds a border around the scrollable area */
+}
+
 table {
-    width: 60%;
+    width: 100%;
     border-collapse: collapse;
     margin: 0 auto;
     border-radius: 4px;
