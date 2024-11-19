@@ -30,13 +30,10 @@ export const calculateDataV2 = (transactionData, budgetData) => {
             }
         });
 
+        // Calculating the total income and expendature per day
+        
 
-        // Calculate the totals
-        // const totalHousing = housingTransactions.reduce((acc, transaction) => acc + transaction.amount, 0);
-        // const totalTransportation = transportationTransactions.reduce((acc, transaction) => acc + transaction.amount, 0);
-        // const totalFood = foodTransactions.reduce((acc, transaction) => acc + transaction.amount, 0);
-        // const totalEntertainment = Entertainment.reduce((acc, transaction) => acc + transaction.amount, 0);
-        // const totalOther = otherTrasactions.reduce((acc, transaction) => acc + transaction.amount, 0);
+
 
         const totalBudget = budgetData.reduce((acc, budget) => acc + budget.amountLimit, 0);
 
