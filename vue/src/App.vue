@@ -3,9 +3,9 @@
     <div id="header">
       <h1 id="title">Personal Finance Manager</h1>
       <div id="nav">
-        <div>
+        <!-- <div>
           <sidebar-component v-if="$store.state.token != ''"/>
-        </div>
+        </div> -->
         <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
         <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
       </div>
@@ -56,7 +56,7 @@ export default {
 
 #title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   color: #000;
 }
 

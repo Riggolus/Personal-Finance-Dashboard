@@ -1,9 +1,6 @@
 <template>
   <div id="dashboard">
     <div class="home">
-      <div id="greeting">
-        <h2>Welcome {{ account.firstName }}</h2>
-      </div>
       
       <BudgetsComponent id="budgets-component"/>
 
@@ -102,19 +99,16 @@
 <style>
 .home {
   display: grid;
-  grid-template-columns: 1fr 1fr .5fr;
+  grid-template-columns: .25fr 1fr .33fr;
   grid-gap: 20px;
   grid-template-areas: 
-    "greeting budgets-component ."
+    "budgets-component analytics-component analytics-component"
     "filter-transactions account-history transaction-logger "
-    ". account-history ."
-    ".analytics-component .";
+    ". account-history .";
 
+  padding: 20px;
 }
 
-#greeting {
-  grid-area: greeting;
-}
 
 #budgets-component {
   grid-area: budgets-component;

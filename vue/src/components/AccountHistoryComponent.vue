@@ -266,10 +266,14 @@
     border: 1px solid #ccc;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;  /* Ensure the modal is above other elements */
-    width: 60%; /* Adjust width as needed */
+    width: 30%; /* Adjust width as needed */
     max-width: 600px; /* Max width for larger screens */
     overflow: auto; /* Allow scrolling if content overflows */
     transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .modal h3 {
@@ -302,6 +306,85 @@
 .modal button:hover {
     background-color: #0056b3;
 }
+
+#delete-transaction {
+    margin-top: 10px;
+    margin-left: 10px;
+    background-color: #dc3545; /* Red color for delete button */
+}
+
+#delete-transaction:hover {
+    background-color: #bd2130; /* Darker red color on hover */
+}
+
+#close-transaction {
+    width: 100%;
+    background-color: #6c757d; /* Gray color for close button */
+}
+
+#close-transaction:hover {
+    background-color: #545b62; /* Darker gray color on hover */
+}
+
+.vuecal-event {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.vuecal-event:hover {
+    background-color: #ddd; /* Change background color on hover */
+    transform: scale(1.05); /* Slightly enlarge the event on hover */
+}
+
+.transaction-row {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.transaction-row:hover {
+    background-color: #f0f0f0; /* Slightly darken the row on hover */
+}
+
+#scrollable-container {
+    max-height: 400px;  /* Set the height you want for the scrollable area */
+    overflow-y: auto;   /* Enables vertical scrolling */
+    border: 1px solid #ddd;  /* Optional: adds a border around the scrollable area */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    border-color: black;
+    padding: 10px;
+    text-align: center;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+    text-align: center;
+    border-color: grey;
+}
+
+#history {
+    padding: 20px;
+}
+
+#history-title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 
 .vuecal-event {
   transition: background-color 0.3s ease, transform 0.3s ease;
