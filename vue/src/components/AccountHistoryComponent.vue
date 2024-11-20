@@ -41,7 +41,7 @@
         </div>
         <div id="edit-transaction-form" v-if="editTransactionDetails">
             <form action="">
-                // Add form fields for editing transaction details
+                
                 <label for="type">Type:</label>
                 <select name="type" id="type" v-model="selectedTransaction.type">
                     <option value="income">Income</option>
@@ -313,6 +313,7 @@
     background-color: #dc3545; /* Red color for delete button */
 }
 
+
 #delete-transaction:hover {
     background-color: #bd2130; /* Darker red color on hover */
 }
@@ -324,6 +325,27 @@
 
 #close-transaction:hover {
     background-color: #545b62; /* Darker gray color on hover */
+}
+
+
+#selected-type {
+    font-size: 1.2rem;
+}
+
+#selected-category {
+    font-size: 1.2rem;
+}
+
+#selected-amount {
+    font-size: 1.2rem;
+}
+
+#selected-date {
+    font-size: 1.2rem;
+}
+
+#selected-notes {
+    font-size: 1.2rem;
 }
 
 .vuecal-event {
@@ -385,10 +407,6 @@ td {
     margin-bottom: 20px;
 }
 
-
-.vuecal-event {
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
 
 .vuecal-event:hover {
   background-color: #ddd; /* Change background color on hover */
