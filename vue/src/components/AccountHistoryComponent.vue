@@ -42,68 +42,73 @@
         <div id="edit-transaction-form" v-if="editTransactionDetails">
             <form action="">
                 
-                <label for="type">Type:</label>
-                <select name="type" id="type" v-model="selectedTransaction.type">
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
-                </select>
+                <label id="edit-type" for="type">Type:
+                    <select name="type" id="type" v-model="selectedTransaction.type">
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </label>
 
-                <label for="category">Category:</label>
-                <select name="category" id="category" v-if="selectedTransaction.type == 'income'"
-                        v-model="selectedTransaction.category">
-                            <optgroup label="Income Sources">
-                                <option value="Salary">Salary</option>
-                                <option value="Bonus">Bonus</option>
-                                <option value="Gift">Gift</option>
-                                <option value="Interest">Interest</option>
-                                <option value="Investment Return">Investment Return</option>
-                                <option value="Rental Income">Rental Income</option>
-                                <option value="Freelance">Freelance</option>
-                                <option value="Other">Other</option>
-                            </optgroup>
-                        </select>
-                <select name="category" id="category" v-else-if="selectedTransaction.type == 'expense'"
-                 v-model="selectedTransaction.category" >
-                    <optgroup label="Housing">
-                        <option value="Rent">Rent</option>
-                        <option value="Mortgage">Mortgage</option>
-                        <option value="Utilities">Utilities</option>
-                        <option value="Home Repairs">Home Repairs</option>
-                    </optgroup>
+                <label id="edit-category" for="category">Category:
+                    <select name="category" id="category" v-if="selectedTransaction.type == 'income'"
+                            v-model="selectedTransaction.category">
+                                <optgroup label="Income Sources">
+                                    <option value="Salary">Salary</option>
+                                    <option value="Bonus">Bonus</option>
+                                    <option value="Gift">Gift</option>
+                                    <option value="Interest">Interest</option>
+                                    <option value="Investment Return">Investment Return</option>
+                                    <option value="Rental Income">Rental Income</option>
+                                    <option value="Freelance">Freelance</option>
+                                    <option value="Other">Other</option>
+                                </optgroup>
+                            </select>
+                    <select name="category" id="category" v-else-if="selectedTransaction.type == 'expense'"
+                    v-model="selectedTransaction.category" >
+                        <optgroup label="Housing">
+                            <option value="Rent">Rent</option>
+                            <option value="Mortgage">Mortgage</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Home Repairs">Home Repairs</option>
+                        </optgroup>
 
-                    <optgroup label="Transportation">
-                        <option value="Car Payment">Car Payment</option>
-                        <option value="Gas">Gas</option>
-                        <option value="Public Transportation">Public Transportation</option>
-                        <option value="Car Repairs">Car Repairs</option>
-                    </optgroup>
+                        <optgroup label="Transportation">
+                            <option value="Car Payment">Car Payment</option>
+                            <option value="Gas">Gas</option>
+                            <option value="Public Transportation">Public Transportation</option>
+                            <option value="Car Repairs">Car Repairs</option>
+                        </optgroup>
 
-                    <optgroup label="Food">
-                        <option value="Groceries">Groceries</option>
-                        <option value="Restaurants">Restaurants</option>
-                        <option value="Fast Food">Fast Food</option>
-                        <option value="Coffee Shops">Coffee Shops</option>
-                    </optgroup>
+                        <optgroup label="Food">
+                            <option value="Groceries">Groceries</option>
+                            <option value="Restaurants">Restaurants</option>
+                            <option value="Fast Food">Fast Food</option>
+                            <option value="Coffee Shops">Coffee Shops</option>
+                        </optgroup>
 
-                    <optgroup label="Entertainment">
-                        <option value="Streaming Services">Streaming Services</option>
-                        <option value="Movies Theater">Movies/Theater</option>
-                        <option value="Concerts Events">Concerts/Events</option>
-                        <option value="Games">Games</option>
-                    </optgroup>
-                    <option value="Other">Other</option>
-                </select>
+                        <optgroup label="Entertainment">
+                            <option value="Streaming Services">Streaming Services</option>
+                            <option value="Movies Theater">Movies/Theater</option>
+                            <option value="Concerts Events">Concerts/Events</option>
+                            <option value="Games">Games</option>
+                        </optgroup>
+                        <option value="Other">Other</option>
+                    </select>
+                </label>
 
-                <label for="amount">Amount:</label>
-                <input type="number" name="amount" id="amount" v-model="selectedTransaction.amount" step="0.01">
+                <label id="edit-amount" for="amount">Amount:
+                    <input type="number" name="amount" id="amount" v-model="selectedTransaction.amount" step="0.01">
+                </label>
 
-                <label for="date">Date:</label>
-                <input type="date" name="date" id="date" v-model="selectedTransaction.date">
+                <label id="edit-date" for="date">Date:
+                    <input type="date" name="date" id="date" v-model="selectedTransaction.date">
+                </label>
 
-                <label for="notes">Notes:</label>
-                <textarea name="notes" id="notes" cols="30" rows="10" v-model="selectedTransaction.notes"></textarea>
+                <label id="edit-note" for="notes">Notes:
+                    <textarea name="notes" id="notes" cols="30" rows="10" v-model="selectedTransaction.notes"></textarea>
+                </label>
 
-                <button @click="updateTransaction">Update</button>
+                <button id="confirm-edit" @click="updateTransaction">Update</button>
 
             </form>
         </div>
@@ -258,7 +263,7 @@
     .modal {
     /* Basic modal styling */
     position: fixed;
-    top: 10%;  /* Adjust this to position it closer or farther from the top */
+    top: 3%;  /* Adjust this to position it closer or farther from the top */
     left: 50%;
     transform: translateX(-50%); /* Centers the modal horizontally */
     background: white;
@@ -327,6 +332,52 @@
     background-color: #545b62; /* Darker gray color on hover */
 }
 
+#edit-transaction-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+}
+
+#edit-transaction-form label {
+    padding: 3px;
+    margin: 0;
+}
+
+#edit-transaction-form select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#edit-transaction-form input[type="number"],
+
+#edit-transaction-form input[type="date"],
+
+#edit-transaction-form textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#edit-note textarea {
+    height: 60px; /* Set a fixed height for the notes textarea */
+}
+
+
+#edit-transaction-form button {
+    width: 50%;
+    margin: 0 auto;
+}
+
+#confirm-edit {
+    background-color: #28a745; /* Green color for confirm button */
+}
+
+#confirm-edit:hover {
+    background-color: #218838; /* Darker green color on hover */
+}
 
 #selected-type {
     font-size: 1.2rem;
