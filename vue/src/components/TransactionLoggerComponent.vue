@@ -31,7 +31,8 @@
                         <select name="category" id="category" v-else-if="this.transaction.type == 'expense'"
                         v-model="this.transaction.category">
                             <optgroup label="Household">
-                                <option value="Rent/Mortgage">Rent/Mortgage</option>
+                                <option value="Rent">Rent</option>
+                                <option value="Mortgage">Mortgage</option>
                                 <option value="Utilities">Utilities</option>
                                 <option value="Home Maintenance">Home Maintenance</option>
                                 <option value="Property Taxes">Property Taxes</option>
@@ -59,8 +60,8 @@
 
                             <optgroup label="Entertainment">
                                 <option value="Streaming Services">Streaming Services</option>
-                                <option value="Movies Theater">Movies/Theater</option>
-                                <option value="Concerts Events">Concerts/Events</option>
+                                <option value="Movies/Theater">Movies/Theater</option>
+                                <option value="Concerts/Events">Concerts/Events</option>
                                 <option value="Games">Games</option>
                             </optgroup>
                             <option value="Other">Other</option>

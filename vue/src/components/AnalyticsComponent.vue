@@ -7,6 +7,7 @@
                 <div>Income: ${{ analyticsData.totalAmount }}</div>
                 <div>Overall Income: ${{ analyticsData.totalIncome }}</div>
                 <div>Overall Expenses: ${{ analyticsData.totalExpense }}</div>
+                <button @click="calculateExpensesVsBudget(analyticsData)">Test</button>
             </div>
         </div>
         <div id="chart">
@@ -65,6 +66,22 @@ export default {
   },
 
   methods: {
+    // Calculating totals for the different expense types
+    calculateExpensesVsBudget(analyticsData) {
+        
+        const t = analyticsData.housingTransactions.reduce((acc, curr) => {
+            const month = new Date(analyticsData.housingTransactions.date).toLocaleString("default", { month: "long" });
+
+            if (!acc[month]) {
+                acc[month] = 0;
+            }
+
+            acc[month] += curr.amount;
+            console.log(acc);
+            return acc;
+        }, {});
+        
+    },
     createChart() {
         // Parse transactions to extract labels, incomes, and expenses
         const labels = this.transactions.map((t) => t.date); // Assuming `t.date` is the transaction date
