@@ -7,6 +7,10 @@
                 <div>Income: ${{ analyticsData.totalAmount }}</div>
                 <div>Overall Income: ${{ analyticsData.totalIncome }}</div>
                 <div>Overall Expenses: ${{ analyticsData.totalExpense }}</div>
+                <div v-for="data in calculatedData">
+                    <div>{{ data }}</div>
+
+                </div>
                 <button @click="calculateExpensesVsBudget(analyticsData)">Test</button>
             </div>
         </div>
@@ -55,6 +59,8 @@ export default {
       chart: null,
       transactions: [],
       budgets: [],
+      calculatedData: []
+
     };
   },
   async created() {
@@ -63,24 +69,46 @@ export default {
   },
   mounted() {
     this.createChart();
+    this.calculateExpensesVsBudget(this.analyticsData);
   },
 
   methods: {
     // Calculating totals for the different expense types
     calculateExpensesVsBudget(analyticsData) {
-        
-        const t = analyticsData.housingTransactions.reduce((acc, curr) => {
-            const month = new Date(analyticsData.housingTransactions.date).toLocaleString("default", { month: "long" });
+        console.log(analyticsData.housingTransactions);
 
-            if (!acc[month]) {
-                acc[month] = 0;
+        if (!analyticsData.housingTransactions || analyticsData.housingTransactions.length === 0) {
+            console.warn("No housing transactions available.");
+            return;
+        }
+
+        // Calculate total amount for each month
+        this.calculatedData = analyticsData.housingTransactions.reduce((acc, curr) => {
+            // Parse the date from the transaction
+            const date = new Date(curr.date);
+            const year = date.getFullYear();
+            const month = date.toLocaleString("default", { month: "long" }); // Correctly formats the month name
+            
+            // Combine year and month for the key
+            const yearMonthKey = `${year}-${month}`;
+            
+            // Initialize the accumulator for this month if it doesn't exist
+            if (!acc[yearMonthKey]) {
+                acc[yearMonthKey] = 0;
             }
 
-            acc[month] += curr.amount;
-            console.log(acc);
+            // Add the current transaction amount
+            acc[yearMonthKey] += curr.amount;
+
             return acc;
         }, {});
-        
+
+        console.log(this.calculatedData);
+
+        return Object.entries(this.calculatedData).map(([month, amount]) => {
+            return { month, total: amount };
+        });
+
     },
     createChart() {
         // Parse transactions to extract labels, incomes, and expenses

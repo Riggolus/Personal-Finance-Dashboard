@@ -12,7 +12,6 @@ export const calculateDataV2 = (transactionData, budgetData) => {
 
         // Process the transactions
         transactionData.forEach(transaction => {
-            console.log(transaction);
             if (transaction.type === 'income') {
                 totalIncome += transaction.amount;
             } else {
