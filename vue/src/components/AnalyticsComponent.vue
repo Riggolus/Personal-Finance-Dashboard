@@ -1,6 +1,3 @@
-
-
-
 <template>
     <div>
         <h3>Analytics</h3>
@@ -14,22 +11,93 @@
                 
             </div>
         </div>
+        <div id="expenses-vs-income">
+            <Line :data="chartData" :options="chartOptions"></Line>
+        </div>
     </div>
 </template>
 
 <script>
 import TransactionsService from "../services/TransactionsService";
 
+import { Line } from "vue-chartjs";
+import {
+    Chart as ChartJS,
+    Title,
+    Tooltip,
+    Legend,
+    LineElement,
+    PointElement,
+    CategoryScale,
+    LinearScale
+} from "chart.js";
+import { callback } from "chart.js/helpers";
+
+ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale);
 
 export default {
   props: ["analyticsData"],
+  components: {
+    Line
+  },
   data() {
     return {
       transactions: [],
       calculatedData: [],
       expensesByMonth: [], // Stores expenses grouped by month
-      incomeByMonth: []
-    };
+      incomeByMonth: [],
+      chartData: {
+      labels: ["January", "February", "March", 
+        "April", "May", "June", "July", 
+        "August", "September", "October", 
+        "November", "December"],
+        datasets: [
+        {
+            label: "Sales",
+            data: [300, 500, 400, 700, 600], // Y-axis data
+            borderColor: "blue", // Line color
+            fill: false
+          },
+          {
+            label: "Expenses",
+            data: [200, 400, 350, 550, 500],
+            borderColor: "red",
+            fill: false
+          }
+        ]
+      },
+      chartOptions: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: "top"
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                return `$${tooltipItem.raw}`;
+              }
+            }
+          }
+       },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: "Month"
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: "Amount ($)"
+            },
+            beginAtZero: true,
+          }
+        }
+     }
+    }
   },
   async created() {
     this.getTransactionsForUser();
