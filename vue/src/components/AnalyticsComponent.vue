@@ -12,7 +12,7 @@
             </div>
         </div>
         <div id="expenses-vs-income">
-            <Line :data="chartData" :options="chartOptions"></Line>
+            <canvas id="incomeVsExpenseChart"></canvas>
         </div>
     </div>
 </template>
@@ -29,8 +29,11 @@ import {
     LineElement,
     PointElement,
     CategoryScale,
-    LinearScale
+    LinearScale,
+    registerables,
+    TimeScale
 } from "chart.js";
+
 import { callback } from "chart.js/helpers";
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale);
@@ -46,58 +49,25 @@ export default {
       calculatedData: [],
       expensesByMonth: [], // Stores expenses grouped by month
       incomeByMonth: [],
+      incomeVsExpenseChart: null,
       chartData: {
-      labels: ["January", "February", "March", 
-        "April", "May", "June", "July", 
-        "August", "September", "October", 
-        "November", "December"],
+        labels: [],
         datasets: [
         {
-            label: "Sales",
-            data: [300, 500, 400, 700, 600], // Y-axis data
+            label: "Income",
+            data: [], // Y-axis data
             borderColor: "blue", // Line color
             fill: false
           },
           {
             label: "Expenses",
-            data: [200, 400, 350, 550, 500],
+            data: [],
             borderColor: "red",
             fill: false
           }
         ]
       },
-      chartOptions: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            position: "top"
-          },
-          tooltip: {
-            callbacks: {
-              label: function(tooltipItem) {
-                return `$${tooltipItem.raw}`;
-              }
-            }
-          }
-       },
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: "Month"
-            }
-          },
-          y: {
-            title: {
-              display: true,
-              text: "Amount ($)"
-            },
-            beginAtZero: true,
-          }
-        }
-     }
-    }
+    };
   },
   async created() {
     this.getTransactionsForUser();
@@ -193,12 +163,84 @@ export default {
             month,
             total,
         }));
+        
+        this.$nextTick(() => {
+            this.renderIncomeVsExpensesChart();
+        });
 
-        console.log("Expenses by Month:", this.expensesByMonth);
-        console.log("Income by Month:", this.incomeByMonth);
-        }
+        },
+        renderIncomeVsExpensesChart() {
+            const dates = this.expensesByMonth.map(data => data.month);
+            const income = this.incomeByMonth.map(data => data.total);
+            const expenses = this.expensesByMonth.map(data => data.total);
 
-  }
+            console.log("Dates:", dates);
+            console.log("Income:", income);
+            console.log("Expenses:", expenses);
+
+            if (this.incomeVsExpenseChart) {
+                this.incomeVsExpenseChart.destroy();
+            }
+
+            const ctx = document.getElementById("incomeVsExpenseChart").getContext("2d");
+
+            ChartJS.register(...registerables, TimeScale, LinearScale);
+
+            this.incomeVsExpenseChart = new ChartJS(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: "Income",
+                            data: income,
+                            borderColor: "blue",
+                            fill: false
+                        },
+                        {
+                            label: "Expenses",
+                            data: expenses,
+                            borderColor: "red",
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: "top"
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `$${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Month"
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Amount ($)"
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        },
+
+  },
+    
 };
 </script>
 
