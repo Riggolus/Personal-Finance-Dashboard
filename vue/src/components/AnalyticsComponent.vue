@@ -153,16 +153,24 @@ export default {
             }
         });
 
-        // Transform grouped data into arrays
-        this.expensesByMonth = Object.entries(expenseData).map(([month, total]) => ({
-            month,
-            total,
-        }));
+        this.expensesByMonth = Object.entries(expenseData)
+        .map(([month, total]) => ({
+          month,
+          total,
+        }))
+        .sort((a, b) => new Date(a.month) - new Date(b.month)); // Sort by month in ascending order
 
-        this.incomeByMonth = Object.entries(incomeData).map(([month, total]) => ({
-            month,
-            total,
-        }));
+      this.incomeByMonth = Object.entries(incomeData)
+        .map(([month, total]) => ({
+          month,
+          total,
+        }))
+        .sort((a, b) => new Date(a.month) - new Date(b.month)); // Sort by month in ascending order
+
+
+        console.log("Expenses by Month:", this.expensesByMonth);
+        console.log("Income by Month:", this.incomeByMonth);
+        
         
         this.$nextTick(() => {
             this.renderIncomeVsExpensesChart();
@@ -194,7 +202,7 @@ export default {
                         {
                             label: "Income",
                             data: income,
-                            borderColor: "blue",
+                            borderColor: "green",
                             fill: false
                         },
                         {
