@@ -14,8 +14,10 @@ export const calculateDataV2 = (transactionData, budgetData) => {
         transactionData.forEach(transaction => {
             if (transaction.type === 'income') {
                 totalIncome += transaction.amount;
+                totalIncome = Math.round(totalIncome * 100) / 100;
             } else {
                 totalExpense += transaction.amount;
+                totalExpense = Math.round(totalExpense * 100) / 100;
             }
             // Categorizing expence by category
             // Need To place them in the parent class based off there category
@@ -67,7 +69,8 @@ export const calculateDataV2 = (transactionData, budgetData) => {
 
         const totalBudget = budgetData.reduce((acc, budget) => acc + budget.amountLimit, 0);
 
-        const totalAmount = totalIncome - totalExpense;
+        const totalAmount = (totalIncome - totalExpense).toFixed(2);
+        
 
 
         // Return the calculated data

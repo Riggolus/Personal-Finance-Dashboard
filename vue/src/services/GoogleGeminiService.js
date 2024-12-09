@@ -1,9 +1,24 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import axios from "axios";
 
-const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const http = axios.create({
+    baseURL: import.meta.env.VITE_REMOTE_API
+    });
 
-const prompt = "Explain how AI works";
+// Set default Authorization header for all requests
+http.interceptors.request.use(config => {
+    const token = localStorage.getItem('token');
+    console.log(`Token being used in request: ${token}`);
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  }, error => {
+    return Promise.reject(error);
+  });
 
-const result = await model.generateContent(prompt);
-console.log(result.response.text());
+export default {
+    postGeminiMessage(question) {
+        const sessionId = localStorage.getItem('token');
+        return http.post('/ask', { question, sessionId });
+    }
+}

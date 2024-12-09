@@ -11,6 +11,9 @@
       <AccountHistoryComponent id="account-history" :filters="filters" />
 
       <AnalyticsComponent id="analytics-component" :analyticsData="analyticsData" />
+
+      <AssistantComponent />
+
     </div>
 
    
@@ -26,6 +29,8 @@
   import AnalyticsComponent from '../components/AnalyticsComponent.vue';
   import TransactionsService from '../services/TransactionsService';
   import BudgetsService from '../services/BudgetsService';
+  import AssistantComponent from '../components/AssistantComponent.vue';
+
   
   import { calculateDataV2 } from '../utils/calculateData';
 
@@ -37,7 +42,8 @@
       TransactionLoggerComponent,
       AccountHistoryComponent,
       FilterTransactionsComponent,
-      AnalyticsComponent
+      AnalyticsComponent,
+      AssistantComponent
     },
     data() {
       return {
