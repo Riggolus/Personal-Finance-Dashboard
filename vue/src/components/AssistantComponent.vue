@@ -37,6 +37,7 @@ export default {
                     console.log(response.data);
 
                     this.conversation.push({ role: 'assistant', text: this.assistantOutput.answer.replace(/^A: /, '') });
+                    this.assistantInput = "";
                 })
                 .catch(e => {
                     console.log(e); 
