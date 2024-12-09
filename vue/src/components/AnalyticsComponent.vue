@@ -3,9 +3,9 @@
         <h3>Analytics</h3>
         <div id="analytics">
             <div class="analytics">
-                <div>Income: ${{ analyticsData.totalAmount }}</div>
-                <div>Overall Income: ${{ analyticsData.totalIncome }}</div>
-                <div>Overall Expenses: ${{ analyticsData.totalExpense }}</div>
+                <div>Balance: ${{ analyticsData.totalAmount }}</div>
+                <div>Income: ${{ analyticsData.totalIncome }}</div>
+                <div>Expenses: ${{ analyticsData.totalExpense }}</div>
                 
                 
                 

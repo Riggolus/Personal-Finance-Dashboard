@@ -3,17 +3,13 @@
     <div id="header">
       <h1 id="title">Personal Finance Manager</h1>
       <div id="nav">
-        <!-- <div>
-          <sidebar-component v-if="$store.state.token != ''"/>
-        </div> -->
-        <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
         <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
       </div>
     </div>
     <router-view />
   </div>
   <footer>
-      <p><a href="https://github.com/Riggolus">github</a></p>
+      <p><a href="https://github.com/Riggolus">Github</a></p>
       <p><a href="https://66d0dcf96553570d66ac15e9--nikolas-knappen.netlify.app/">Created by Nikolas Knappen</a></p>
       <p><a href="https://www.linkedin.com/in/nikolasknappen/">LinkedIn</a></p>
   </footer>
