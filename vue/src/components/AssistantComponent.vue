@@ -21,7 +21,10 @@
             </div>
         </div>
     </div>
-    <button id="assistant-button" @click="startAssistant">Message</button>
+    <button id="assistant-button" @click="startAssistant">
+        <div v-if="!loadingAssistant">Assistant</div>
+        <div v-else><img src="src\assets\loading-4802_256.gif" alt="Loading..."></div>
+        </button>
 </template>
 
 
@@ -36,7 +39,8 @@ export default {
             assistantInput: "",
             assistantOutput: "",
             conversation: [],
-            transactions: []
+            transactions: [],
+            loadingAssistant: false
         };
     },
     methods: {
@@ -48,15 +52,13 @@ export default {
                 .catch(e => console.error(e));
         }, 
         getResponse() {
-            // Push user input to the conversation
+            this.loadingAssistant = true;
             this.conversation.push({ role: 'user', text: this.assistantInput });
-
-            // Send input to Gemini API
             GoogleGeminiService.postGeminiMessage(this.assistantInput)
                 .then(response => {
-                    // Add assistant's response to the conversation
                     this.conversation.push({ role: 'assistant', text: response.data.answer.replace(/^A: /, '') });
                     this.assistantInput = "";
+                    this.loadingAssistant = false;
                     this.scrollToBottom();
                 })
                 .catch(e => console.error(e));
@@ -68,18 +70,23 @@ export default {
             });
         },
         startAssistant() {
-            // Ensure the transactions are serialized to JSON format
+            if (this.showAssistant) {
+                this.showAssistant = !this.showAssistant;
+            } else {
+            this.loadingAssistant = true;
+
             const transactionsData = JSON.stringify(this.transactions, null, 2); 
 
-            // Send transactions and start the assistant
             GoogleGeminiService.postGeminiMessage(
                 `The following is the current user's transactional data: ${transactionsData}`
             )
             .then(() => {
                 this.showAssistant = !this.showAssistant;
+                this.loadingAssistant = false;
             })
             .catch(e => console.error(e));
             }
+        }
     },
     mounted() {
         this.getTransactionsForAssistant();
@@ -192,11 +199,23 @@ export default {
     bottom: 20px;
     right: 20px;
     padding: 1rem;
-    border-radius: 50%;
-    background-color: #007bff;
-    color: white;
-    border: none;
+    border-radius: 50px;
+    background-color: white;
+    border-color: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100px;
+    height: 50px;
+    color: #007bff;
+    border: 1px solid #007bff;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+img {
+    width: 45px;
+    height: 45px;
 }
 </style>
