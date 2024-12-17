@@ -118,22 +118,39 @@
 
 #budgets-component {
   grid-area: budgets-component;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #transaction-logger {
   grid-area: transaction-logger;
+  
 }
 
 #filter-transactions {
   grid-area: filter-transactions;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #account-history {
   grid-area: account-history;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #analytics-component {
   grid-area: analytics-component;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 </style>
